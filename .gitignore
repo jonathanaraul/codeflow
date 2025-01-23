@@ -1,0 +1,18 @@
+# Ignorar archivos de credenciales
+__pycache__/
+*.py[cod]
+*$py.class
+
+credentials.json
+firebase.json
+token.json
+
+# Ignorar entornos virtuales (si usas uno)
+venv/
+env/
+*.env
+
+# Ignorar otros archivos sensibles o temporales
+*.log
+*.bak
+*.swp
