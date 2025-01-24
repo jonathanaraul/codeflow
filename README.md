@@ -86,4 +86,4 @@ Los proyectos se guardan en `projects_config.json` con:
 
 ## Licencia 📄
 
-MIT License - Ver [LICENSE](LICENSE) para más detalles.
+Licencia GPL (General Public License) - Ver [LICENSE](LICENSE) para más detalles.
