@@ -8,64 +8,71 @@ class FileProcessor:
         contenido_total = ""
         archivos_no_encontrados = []
         
+        # Obtenemos el patrón y lo pasamos a minúsculas para comparar de forma consistente
+        patron = config.get("patron", "").strip().lower()
+
+        directorio_completo = os.path.normpath(
+            os.path.join(config["ruta_base"], config["directorio_principal"])
+        ) if config["directorio_principal"] else os.path.normpath(config["ruta_base"])
+
         # Procesar formatos prohibidos
         formatos_prohibidos = [
-            f if f.startswith('.') else f'.{f}'
-            for f in (
-                ff.strip().lower()
-                for ff in config.get("formatos_prohibidos", "").split(",")
-                if ff.strip()
-            )
+            f.strip().lower() 
+            for f in config.get("formatos_prohibidos", "").split(",") 
+            if f.strip()
         ]
-        
-        # Si NO está marcado "buscar_solo_especificos", se realiza el escaneo de directorios
-        if not config.get("buscar_solo_especificos", False):
-            # Manejo de múltiples directorios
-            directorios_list = [
-                d.strip() for d in config.get("directorios", "").split(",") if d.strip()
-            ]
-            
-            # Si no hay directorios listados, usar el campo antiguo como fallback
-            if not directorios_list:
-                directorios_list = [config["directorio_principal"]]
-            
+        formatos_prohibidos = [
+            f if f.startswith('.') else f'.{f}' 
+            for f in formatos_prohibidos
+        ]  # Normalizar extensiones
+
+        # Procesamiento de directorios
+        if os.path.isdir(directorio_completo):
             directorios_prohibidos = [
-                dp.strip() for dp in config["directorios_prohibidos"].split(",") if dp.strip()
+                d.strip() 
+                for d in config["directorios_prohibidos"].split(",") 
+                if d.strip()
             ]
             archivos_prohibidos = [
-                ap.strip() for ap in config["archivos_prohibidos"].split(",") if ap.strip()
+                a.strip() 
+                for a in config["archivos_prohibidos"].split(",") 
+                if a.strip()
             ]
             
-            for directorio in directorios_list:
-                # Construir ruta completa
-                full_dir = (os.path.normpath(os.path.join(config["ruta_base"], directorio))
-                            if directorio
-                            else os.path.normpath(config["ruta_base"]))
+            for root_dir, dirs, files in os.walk(directorio_completo):
+                dirs[:] = [d for d in dirs if d not in directorios_prohibidos]
                 
-                # Verificar que sea un directorio válido
-                if os.path.isdir(full_dir):
-                    for root_dir, dirs, files in os.walk(full_dir):
-                        # Filtrar directorios prohibidos
-                        dirs[:] = [d for d in dirs if d not in directorios_prohibidos]
-                        
-                        # Filtrar archivos prohibidos y formatos prohibidos
-                        files = [
-                            f for f in files
-                            if f not in archivos_prohibidos
-                            and os.path.splitext(f)[1].lower() not in formatos_prohibidos
-                        ]
-                        
-                        for archivo in files:
-                            archivo_path = os.path.join(root_dir, archivo)
-                            contenido_total += FileProcessor._leer_archivo(
-                                archivo_path,
-                                config["ruta_base"],
-                                incluir_ruta
-                            )
-        
-        # Procesamiento de archivos específicos (siempre se hace)
-        archivos_especificos = [a.strip() for a in config["archivos"].split(",") if a.strip()]
+                # Filtrar archivos prohibidos, formatos prohibidos y aplicar patrón si está definido
+                files_filtrados = []
+                for archivo in files:
+                    if archivo in archivos_prohibidos:
+                        continue
+                    if os.path.splitext(archivo)[1].lower() in formatos_prohibidos:
+                        continue
+                    if patron and patron not in archivo.lower():
+                        continue
+                    files_filtrados.append(archivo)
+                
+                for archivo in files_filtrados:
+                    archivo_path = os.path.join(root_dir, archivo)
+                    contenido_total += FileProcessor._leer_archivo(
+                        archivo_path, 
+                        config["ruta_base"], 
+                        incluir_ruta
+                    )
+
+        # Procesamiento de archivos específicos
+        archivos_especificos = [
+            a.strip() 
+            for a in config["archivos"].split(",") 
+            if a.strip()
+        ]
         for archivo in archivos_especificos:
+            # Si hay patrón, verficamos que el nombre del archivo contenga el patrón
+            nombre_archivo = os.path.basename(archivo)
+            if patron and patron not in nombre_archivo.lower():
+                continue
+
             archivo_path = os.path.normpath(os.path.join(config["ruta_base"], archivo))
             
             # Verificar si el formato está prohibido
@@ -75,8 +82,8 @@ class FileProcessor:
             
             if os.path.isfile(archivo_path):
                 contenido_total += FileProcessor._leer_archivo(
-                    archivo_path,
-                    config["ruta_base"],
+                    archivo_path, 
+                    config["ruta_base"], 
                     incluir_ruta
                 )
             else:

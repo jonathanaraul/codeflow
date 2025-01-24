@@ -10,7 +10,6 @@ class ApplicationGUI:
         self.file_processor = file_processor
         self.current_project = None
         self.incluir_ruta_var = tk.BooleanVar(value=True)
-        self.buscar_solo_especificos_var = tk.BooleanVar(value=False)  # Nuevo check para buscar solo archivos específicos
         
         # Configuración de diseño
         self.colores = {
@@ -37,47 +36,47 @@ class ApplicationGUI:
         
         # Configuración base
         style.configure('.', 
-                      background=self.colores['fondo'],
-                      foreground=self.colores['texto'],
-                      font=self.fuente_principal,
-                      borderwidth=0)
+                        background=self.colores['fondo'],
+                        foreground=self.colores['texto'],
+                        font=self.fuente_principal,
+                        borderwidth=0)
         
         # Componentes específicos
         style.configure('TFrame', background=self.colores['fondo_paneles'])
         style.configure('TLabel', background=self.colores['fondo_paneles'], font=self.fuente_titulos)
         style.configure('TEntry', 
-                      fieldbackground=self.colores['campo_texto'],
-                      foreground=self.colores['texto'],
-                      bordercolor=self.colores['bordes'],
-                      relief='flat')
+                        fieldbackground=self.colores['campo_texto'],
+                        foreground=self.colores['texto'],
+                        bordercolor=self.colores['bordes'],
+                        relief='flat')
         
         style.configure('TButton', 
-                      background=self.colores['botones'],
-                      borderwidth=1,
-                      relief='flat',
-                      font=self.fuente_principal)
+                        background=self.colores['botones'],
+                        borderwidth=1,
+                        relief='flat',
+                        font=self.fuente_principal)
         style.map('TButton',
-                background=[('active', self.colores['hover']), ('!disabled', self.colores['botones'])],
-                relief=[('pressed', 'sunken'), ('!pressed', 'flat')])
+                  background=[('active', self.colores['hover']), ('!disabled', self.colores['botones'])],
+                  relief=[('pressed', 'sunken'), ('!pressed', 'flat')])
         
         style.configure('TCheckbutton', 
-                      background=self.colores['fondo_paneles'],
-                      indicatormargin=5)
+                        background=self.colores['fondo_paneles'],
+                        indicatormargin=5)
         
         style.configure('TCombobox',
-                      fieldbackground=self.colores['campo_texto'],
-                      arrowsize=12,
-                      relief='flat')
+                        fieldbackground=self.colores['campo_texto'],
+                        arrowsize=12,
+                        relief='flat')
         style.map('TCombobox',
-                fieldbackground=[('readonly', self.colores['campo_texto'])],
-                selectbackground=[('readonly', self.colores['acento'])])
+                  fieldbackground=[('readonly', self.colores['campo_texto'])],
+                  selectbackground=[('readonly', self.colores['acento'])])
         
         style.configure('Vertical.TScrollbar',
-                      background=self.colores['botones'],
-                      troughcolor=self.colores['fondo'],
-                      bordercolor=self.colores['bordes'],
-                      arrowcolor=self.colores['texto'],
-                      gripcount=0)
+                        background=self.colores['botones'],
+                        troughcolor=self.colores['fondo'],
+                        bordercolor=self.colores['bordes'],
+                        arrowcolor=self.colores['texto'],
+                        gripcount=0)
 
     def _setup_ui(self):
         self.root.title("Gestor de Proyectos - Copiador Profesional")
@@ -132,9 +131,8 @@ class ApplicationGUI:
                 wrap=tk.WORD
             )
         
-        # Ajustamos tamaños: prompt más pequeño, solicitud más grande
-        self.prompt_textarea = crear_textarea(self.right_panel, 4)
-        self.solicitud_textarea = crear_textarea(self.right_panel, 8)
+        self.prompt_textarea = crear_textarea(self.right_panel, 6)
+        self.solicitud_textarea = crear_textarea(self.right_panel, 6)
         
         # Panel izquierdo - Configuraciones
         self.directorio_principal_entry = ttk.Entry(
@@ -142,24 +140,30 @@ class ApplicationGUI:
             width=60, 
             style='TEntry'
         )
+
+        # Nuevo campo Patrón
+        self.patron_entry = ttk.Entry(
+            self.left_panel,
+            width=60,
+            style='TEntry'
+        )
         
         self.archivos_textarea = crear_textarea(self.left_panel, 4)
         self.directorios_prohibidos_textarea = crear_textarea(self.left_panel, 4)
         self.archivos_prohibidos_textarea = crear_textarea(self.left_panel, 4)
-        self.formatos_prohibidos_textarea = crear_textarea(self.left_panel, 4)
+        
+        # Convertir formatos_prohibidos a Entry en lugar de Text
+        self.formatos_prohibidos_entry = ttk.Entry(
+            self.left_panel,
+            width=60,
+            style='TEntry'
+        )
         
         # Botones y controles
         self.checkbutton = ttk.Checkbutton(
             self.right_panel,
             text="Incluir rutas y nombres de archivo",
             variable=self.incluir_ruta_var,
-            style='TCheckbutton'
-        )
-        
-        self.checkbutton_buscar_solo_especificos = ttk.Checkbutton(
-            self.right_panel,
-            text="Buscar solo archivos específicos",
-            variable=self.buscar_solo_especificos_var,
             style='TCheckbutton'
         )
         
@@ -177,16 +181,20 @@ class ApplicationGUI:
             style='TButton'
         )
         
-        # Scrollbars personalizadas
+        # Scrollbars personalizadas para las áreas de texto
         def agregar_scrollbar(text_widget):
             scroll = ttk.Scrollbar(text_widget, style='Vertical.TScrollbar')
             scroll.pack(side=tk.RIGHT, fill=tk.Y)
             text_widget.config(yscrollcommand=scroll.set)
             scroll.config(command=text_widget.yview)
         
-        for area in [self.prompt_textarea, self.solicitud_textarea, 
-                    self.archivos_textarea, self.directorios_prohibidos_textarea,
-                    self.archivos_prohibidos_textarea, self.formatos_prohibidos_textarea]:
+        for area in [
+            self.prompt_textarea, 
+            self.solicitud_textarea,
+            self.archivos_textarea, 
+            self.directorios_prohibidos_textarea,
+            self.archivos_prohibidos_textarea
+        ]:
             agregar_scrollbar(area)
 
     def _configurar_layout(self):
@@ -213,14 +221,16 @@ class ApplicationGUI:
         self.solicitud_textarea.pack(fill=tk.BOTH, expand=True)
         
         self.checkbutton.pack(pady=15, anchor=tk.W)
-        self.checkbutton_buscar_solo_especificos.pack(pady=5, anchor=tk.W)
         self.btn_copiar.pack(pady=20, ipadx=20, ipady=8)
 
         # Panel izquierdo
         ttk.Label(self.left_panel, text="CONFIGURACIÓN AVANZADA").pack(pady=(0, 15), anchor=tk.W)
         
-        ttk.Label(self.left_panel, text="Directorio(s) (opcional):").pack(pady=(0, 5), anchor=tk.W)
+        ttk.Label(self.left_panel, text="Directorio Principal (opcional):").pack(pady=(0, 5), anchor=tk.W)
         self.directorio_principal_entry.pack(fill=tk.X, pady=5)
+
+        ttk.Label(self.left_panel, text="Patrón (opcional):").pack(pady=(15, 5), anchor=tk.W)
+        self.patron_entry.pack(fill=tk.X, pady=5)
         
         ttk.Label(self.left_panel, text="Archivos Específicos:").pack(pady=(15, 5), anchor=tk.W)
         self.archivos_textarea.pack(fill=tk.BOTH, expand=True)
@@ -232,7 +242,7 @@ class ApplicationGUI:
         self.archivos_prohibidos_textarea.pack(fill=tk.BOTH, expand=True)
         
         ttk.Label(self.left_panel, text="Formatos Prohibidos:").pack(pady=(15, 5), anchor=tk.W)
-        self.formatos_prohibidos_textarea.pack(fill=tk.BOTH, expand=True)
+        self.formatos_prohibidos_entry.pack(fill=tk.X, pady=5)
 
     def _cargar_proyectos(self):
         proyectos = self.config_handler.get_projects()
@@ -242,7 +252,10 @@ class ApplicationGUI:
             self.project_selector.set(current)
             self._cargar_configuracion_proyecto(current)
         
-        self.project_selector.bind("<<ComboboxSelected>>", lambda e: self._cargar_configuracion_proyecto(self.project_selector.get()))
+        self.project_selector.bind(
+            "<<ComboboxSelected>>", 
+            lambda e: self._cargar_configuracion_proyecto(self.project_selector.get())
+        )
 
     def _cargar_configuracion_proyecto(self, proyecto):
         config = self.config_handler.get_project_config(proyecto)
@@ -252,13 +265,8 @@ class ApplicationGUI:
         self.ruta_base_entry.delete(0, tk.END)
         self.ruta_base_entry.insert(0, config["ruta_base"])
         
-        # Soporte para múltiples directorios o campo único
-        directorios_config = config.get("directorios", "")
-        if not directorios_config:
-            directorios_config = config["directorio_principal"]
-        
         self.directorio_principal_entry.delete(0, tk.END)
-        self.directorio_principal_entry.insert(0, directorios_config)
+        self.directorio_principal_entry.insert(0, config["directorio_principal"])
         
         self.archivos_textarea.delete("1.0", tk.END)
         self.archivos_textarea.insert(tk.END, config["archivos"])
@@ -269,16 +277,16 @@ class ApplicationGUI:
         self.archivos_prohibidos_textarea.delete("1.0", tk.END)
         self.archivos_prohibidos_textarea.insert(tk.END, config["archivos_prohibidos"])
         
-        self.formatos_prohibidos_textarea.delete("1.0", tk.END)
-        self.formatos_prohibidos_textarea.insert(tk.END, config.get("formatos_prohibidos", ""))
-        
+        self.formatos_prohibidos_entry.delete(0, tk.END)
+        self.formatos_prohibidos_entry.insert(0, config.get("formatos_prohibidos", ""))
+
         self.prompt_textarea.delete("1.0", tk.END)
         self.prompt_textarea.insert(tk.END, config.get("prompt", ""))
-        
+
+        self.patron_entry.delete(0, tk.END)
+        self.patron_entry.insert(0, config.get("patron", ""))
+
         self.solicitud_textarea.delete("1.0", tk.END)
-        
-        # Cargamos el nuevo check de búsqueda
-        self.buscar_solo_especificos_var.set(config.get("buscar_solo_especificos", False))
 
     def _nuevo_proyecto(self):
         nuevo_nombre = self._pedir_nombre_proyecto()
@@ -306,9 +314,10 @@ class ApplicationGUI:
         self.archivos_textarea.delete("1.0", tk.END)
         self.directorios_prohibidos_textarea.delete("1.0", tk.END)
         self.archivos_prohibidos_textarea.delete("1.0", tk.END)
-        self.formatos_prohibidos_textarea.delete("1.0", tk.END)
+        self.formatos_prohibidos_entry.delete(0, tk.END)
         self.prompt_textarea.delete("1.0", tk.END)
         self.solicitud_textarea.delete("1.0", tk.END)
+        self.patron_entry.delete(0, tk.END)
 
     def _seleccionar_ruta_base(self):
         ruta = filedialog.askdirectory()
@@ -324,14 +333,13 @@ class ApplicationGUI:
 
         config_data = {
             "ruta_base": self.ruta_base_entry.get().strip(),
-            "directorios": self.directorio_principal_entry.get().strip(),
-            "directorio_principal": self.directorio_principal_entry.get().strip(),  # Para compatibilidad
+            "directorio_principal": self.directorio_principal_entry.get().strip(),
             "archivos": self.archivos_textarea.get("1.0", tk.END).strip(),
             "directorios_prohibidos": self.directorios_prohibidos_textarea.get("1.0", tk.END).strip(),
             "archivos_prohibidos": self.archivos_prohibidos_textarea.get("1.0", tk.END).strip(),
-            "formatos_prohibidos": self.formatos_prohibidos_textarea.get("1.0", tk.END).strip(),
+            "formatos_prohibidos": self.formatos_prohibidos_entry.get().strip(),
             "prompt": self.prompt_textarea.get("1.0", tk.END).strip(),
-            "buscar_solo_especificos": self.buscar_solo_especificos_var.get()
+            "patron": self.patron_entry.get().strip()
         }
 
         try:

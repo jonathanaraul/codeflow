@@ -17,10 +17,9 @@ CONFIG_SCHEMA = {
                         "archivos": {"type": "string"},
                         "directorios_prohibidos": {"type": "string"},
                         "archivos_prohibidos": {"type": "string"},
-                        "formatos_prohibidos": {"type": "string"},  # Campo ya existente
+                        "formatos_prohibidos": {"type": "string"},
                         "prompt": {"type": "string"},
-                        "directorios": {"type": "string"},           # Nuevo campo
-                        "buscar_solo_especificos": {"type": "boolean"}  # Nuevo campo
+                        "patron": {"type": "string"}
                     },
                     "required": [
                         "ruta_base",
@@ -89,16 +88,14 @@ class ConfigHandler:
         if project_name in config["projects"]:
             raise ValueError(f"El proyecto {project_name} ya existe")
         
-        # Inicializamos los campos básicos y los nuevos
         config["projects"][project_name] = {
             "ruta_base": "",
             "directorio_principal": "",
             "archivos": "",
             "directorios_prohibidos": "",
             "archivos_prohibidos": "",
-            "formatos_prohibidos": "",    # Campo existente
+            "formatos_prohibidos": "",
             "prompt": "",
-            "directorios": "",            # Nuevo campo
-            "buscar_solo_especificos": False
+            "patron": ""
         }
         self._save_config(config)
