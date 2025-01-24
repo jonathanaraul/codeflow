@@ -10,6 +10,7 @@ class ApplicationGUI:
         self.file_processor = file_processor
         self.current_project = None
         self.incluir_ruta_var = tk.BooleanVar(value=True)
+        self.buscar_solo_especificos_var = tk.BooleanVar(value=False)  # Nuevo check para buscar solo archivos específicos
         
         # Configuración de diseño
         self.colores = {
@@ -131,8 +132,9 @@ class ApplicationGUI:
                 wrap=tk.WORD
             )
         
-        self.prompt_textarea = crear_textarea(self.right_panel, 6)
-        self.solicitud_textarea = crear_textarea(self.right_panel, 6)
+        # Ajustamos tamaños: prompt más pequeño, solicitud más grande
+        self.prompt_textarea = crear_textarea(self.right_panel, 4)
+        self.solicitud_textarea = crear_textarea(self.right_panel, 8)
         
         # Panel izquierdo - Configuraciones
         self.directorio_principal_entry = ttk.Entry(
@@ -151,6 +153,13 @@ class ApplicationGUI:
             self.right_panel,
             text="Incluir rutas y nombres de archivo",
             variable=self.incluir_ruta_var,
+            style='TCheckbutton'
+        )
+        
+        self.checkbutton_buscar_solo_especificos = ttk.Checkbutton(
+            self.right_panel,
+            text="Buscar solo archivos específicos",
+            variable=self.buscar_solo_especificos_var,
             style='TCheckbutton'
         )
         
@@ -204,12 +213,13 @@ class ApplicationGUI:
         self.solicitud_textarea.pack(fill=tk.BOTH, expand=True)
         
         self.checkbutton.pack(pady=15, anchor=tk.W)
+        self.checkbutton_buscar_solo_especificos.pack(pady=5, anchor=tk.W)
         self.btn_copiar.pack(pady=20, ipadx=20, ipady=8)
 
         # Panel izquierdo
         ttk.Label(self.left_panel, text="CONFIGURACIÓN AVANZADA").pack(pady=(0, 15), anchor=tk.W)
         
-        ttk.Label(self.left_panel, text="Directorio Principal (opcional):").pack(pady=(0, 5), anchor=tk.W)
+        ttk.Label(self.left_panel, text="Directorio(s) (opcional):").pack(pady=(0, 5), anchor=tk.W)
         self.directorio_principal_entry.pack(fill=tk.X, pady=5)
         
         ttk.Label(self.left_panel, text="Archivos Específicos:").pack(pady=(15, 5), anchor=tk.W)
@@ -242,8 +252,13 @@ class ApplicationGUI:
         self.ruta_base_entry.delete(0, tk.END)
         self.ruta_base_entry.insert(0, config["ruta_base"])
         
+        # Soporte para múltiples directorios o campo único
+        directorios_config = config.get("directorios", "")
+        if not directorios_config:
+            directorios_config = config["directorio_principal"]
+        
         self.directorio_principal_entry.delete(0, tk.END)
-        self.directorio_principal_entry.insert(0, config["directorio_principal"])
+        self.directorio_principal_entry.insert(0, directorios_config)
         
         self.archivos_textarea.delete("1.0", tk.END)
         self.archivos_textarea.insert(tk.END, config["archivos"])
@@ -261,6 +276,9 @@ class ApplicationGUI:
         self.prompt_textarea.insert(tk.END, config.get("prompt", ""))
         
         self.solicitud_textarea.delete("1.0", tk.END)
+        
+        # Cargamos el nuevo check de búsqueda
+        self.buscar_solo_especificos_var.set(config.get("buscar_solo_especificos", False))
 
     def _nuevo_proyecto(self):
         nuevo_nombre = self._pedir_nombre_proyecto()
@@ -306,12 +324,14 @@ class ApplicationGUI:
 
         config_data = {
             "ruta_base": self.ruta_base_entry.get().strip(),
-            "directorio_principal": self.directorio_principal_entry.get().strip(),
+            "directorios": self.directorio_principal_entry.get().strip(),
+            "directorio_principal": self.directorio_principal_entry.get().strip(),  # Para compatibilidad
             "archivos": self.archivos_textarea.get("1.0", tk.END).strip(),
             "directorios_prohibidos": self.directorios_prohibidos_textarea.get("1.0", tk.END).strip(),
             "archivos_prohibidos": self.archivos_prohibidos_textarea.get("1.0", tk.END).strip(),
             "formatos_prohibidos": self.formatos_prohibidos_textarea.get("1.0", tk.END).strip(),
-            "prompt": self.prompt_textarea.get("1.0", tk.END).strip()
+            "prompt": self.prompt_textarea.get("1.0", tk.END).strip(),
+            "buscar_solo_especificos": self.buscar_solo_especificos_var.get()
         }
 
         try:
