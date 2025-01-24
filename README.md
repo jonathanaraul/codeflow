@@ -43,14 +43,20 @@ pip install -r requirements.txt
    ```bash
    python main.py
    ```
+
 2. **Crear nuevo proyecto:**  
    Click en "➕ Nuevo Proyecto"
+
 3. **Configurar rutas y exclusiones:**  
+   
    - Seleccionar ruta base  
    - Definir directorios/archivos prohibidos
+
 4. **Trabajar con prompts:**  
+   
    - Escribir contexto permanente en "Prompt de Contexto"  
    - Agregar solicitudes temporales
+
 5. **Copiar y guardar:**  
    Usar botón "⎘ Copiar y Guardar"
 

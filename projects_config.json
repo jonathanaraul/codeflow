@@ -11,11 +11,13 @@
         },
         "makeup": {
             "ruta_base": "C:/Users/jonat/Documents/Repositorios/adelys-makeup",
-            "directorio_principal": "",
-            "archivos": "",
+            "directorio_principal": "components/Shared/Layout/",
+            "archivos": "pages/index.tsx,\nlib/authService.ts,\ncontext/AuthContext.tsx,\nlib/coursesService.ts,\ntypes/CourseTypes.ts",
             "directorios_prohibidos": ".next,.git,node_modules,public,python,styles",
-            "archivos_prohibidos": "tsconfig.tsbuildinfo,package-lock.json"
+            "archivos_prohibidos": "tsconfig.tsbuildinfo,package-lock.json",
+            "formatos_prohibidos": "",
+            "prompt": "No elimines funciones, comentarios o fragmentos de c\u00f3digo ya existentes a no ser que sea necesario para\ncumplir la solicitud.\nSi necesitas realizar cambios, solo agrega o reemplaza lo estrictamente necesario para cumplir con los requisitos en la solicitud.\nDevu\u00e9lveme los archivos COMPLETOS que hayas modificado, asegur\u00e1ndote de que el c\u00f3digo sea completamente compatible con typescript\n\nEl c\u00f3digo final no debe generar errores de compilaci\u00f3n ni advertencias de typescript\nAseg\u00farate de que cada archivo generado comience con la misma linea que tienen los que te estoy suministrando donde en un comentario se indica la ubicacion y el nombre del archivo\nDebes indicarme primero c\u00f3mo solucionar\u00edas la situaci\u00f3n y proporcionarme la lista de archivos\n creados o modificados IMPORTANTE SOLO LOS ARCHIVOS QUE TENGAN CAMBIOS REALES.\n\nCuando yo te lo indique, comienza a pasarme archivo por archivo COMPLETO.\nNO ME PUEDES PASAR ARCHIVOS INCOMPLETOS, ESPERA QUE YO TE COMIENCE A SOLICITAR LOS ARCHIVOS COMPLETOS\n\nNO ME MUESTRES CODIGO HASTA QUE TE LO PIDA"
         }
     },
-    "current_project": "copiador"
+    "current_project": "makeup"
 }
