@@ -300,12 +300,11 @@ class ApplicationGUI:
             except Exception as e:
                 messagebox.showerror("Error", str(e))
 
-    def _pedir_nombre_proyecto(self):
+    def _pedir_nombre_proyecto(self):  # <-- CORRECCIÓN APLICADA AQUÍ
         return simpledialog.askstring(
             "Nuevo Proyecto", 
             "Nombre del nuevo proyecto:",
-            parent=self.root,
-            font=self.fuente_principal
+            parent=self.root
         )
 
     def _limpiar_campos(self):
