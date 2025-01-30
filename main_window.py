@@ -2,6 +2,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog, filedialog
 import pyperclip
+import os
 from gui_components import (
     ScrolledText,
     CustomButton,
@@ -9,6 +10,7 @@ from gui_components import (
     ProjectSelector
 )
 from gui_styles import StyleManager
+from file_generator import FileGenerator
 
 class MainWindow:
     def __init__(self, root, config_handler, file_processor):
@@ -17,17 +19,13 @@ class MainWindow:
         self.file_processor = file_processor
         self.current_project = None
         self.incluir_ruta_var = tk.BooleanVar(value=True)
+        self.generador_activo_var = tk.BooleanVar(value=False)
+        self.file_generator = None
 
-        # Obtener el tamaño de pantalla completo
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
-
-        # Ajustar para dejar espacio para la barra de tareas
-        adjusted_height = screen_height - 70  # Resta 70px para la barra de tareas (aproximado)
-        adjusted_width = screen_width
-
-        # Centrar en la pantalla
-        self.root.geometry(f"{adjusted_width}x{adjusted_height}+0+0")
+        adjusted_height = screen_height - 70
+        self.root.geometry(f"{screen_width}x{adjusted_height}+0+0")
 
         self.style_manager = StyleManager()
         self._setup_main_frames()
@@ -46,7 +44,6 @@ class MainWindow:
         self.left_panel.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=5)
 
     def _create_right_panel_widgets(self):
-        # Proyecto actual
         ttk.Label(self.right_panel, text="PROYECTO ACTUAL:").pack(pady=(0, 10), anchor=tk.W)
         self.project_selector = ProjectSelector(
             self.right_panel,
@@ -56,7 +53,6 @@ class MainWindow:
         )
         self.project_selector.frame.pack(fill=tk.X, pady=5)
 
-        # Ruta base
         self.ruta_base_component = LabeledEntry(
             self.right_panel,
             self.style_manager,
@@ -64,7 +60,6 @@ class MainWindow:
         )
         self.ruta_base_component.frame.pack(fill=tk.X, pady=5)
 
-        # Botón seleccionar ruta
         self.btn_seleccionar = CustomButton(
             self.right_panel,
             self.style_manager,
@@ -73,7 +68,6 @@ class MainWindow:
         )
         self.btn_seleccionar.pack(pady=10, ipadx=10)
 
-        # Áreas de texto
         self.prompt_text = ScrolledText(self.right_panel, self.style_manager, 6)
         ttk.Label(self.right_panel, text="PROMPT DE CONTEXTO:").pack(pady=(15, 5), anchor=tk.W)
         self.prompt_text.frame.pack(fill=tk.BOTH, expand=True)
@@ -82,13 +76,20 @@ class MainWindow:
         ttk.Label(self.right_panel, text="SOLICITUD ACTUAL:").pack(pady=(15, 5), anchor=tk.W)
         self.solicitud_text.frame.pack(fill=tk.BOTH, expand=True)
 
-        # Checkbutton y botón final
         ttk.Checkbutton(
             self.right_panel,
             text="Incluir rutas y nombres de archivo",
             variable=self.incluir_ruta_var,
             style='TCheckbutton'
-        ).pack(pady=15, anchor=tk.W)
+        ).pack(pady=(15, 5), anchor=tk.W)
+
+        ttk.Checkbutton(
+            self.right_panel,
+            text="Generador de archivos",
+            variable=self.generador_activo_var,
+            command=self._toggle_generador_archivos,
+            style='TCheckbutton'
+        ).pack(pady=5, anchor=tk.W)
 
         self.btn_copiar = CustomButton(
             self.right_panel,
@@ -101,7 +102,6 @@ class MainWindow:
     def _create_left_panel_widgets(self):
         ttk.Label(self.left_panel, text="CONFIGURACIÓN AVANZADA").pack(pady=(0, 15), anchor=tk.W)
 
-        # Componentes de configuración
         self.directorio_principal_component = LabeledEntry(
             self.left_panel,
             self.style_manager,
@@ -116,7 +116,6 @@ class MainWindow:
         )
         self.patron_component.frame.pack(fill=tk.X, pady=5)
 
-        # Áreas de texto especializadas
         self.archivos_text = ScrolledText(self.left_panel, self.style_manager, 4)
         ttk.Label(self.left_panel, text="Archivos Específicos:").pack(pady=(15, 5), anchor=tk.W)
         self.archivos_text.frame.pack(fill=tk.BOTH, expand=True)
@@ -136,7 +135,6 @@ class MainWindow:
         )
         self.formatos_prohibidos_component.frame.pack(fill=tk.X, pady=5)
 
-        # Configurar bindings
         self.project_selector.combobox.bind(
             "<<ComboboxSelected>>",
             lambda e: self._cargar_configuracion_proyecto(
@@ -153,6 +151,10 @@ class MainWindow:
             self._cargar_configuracion_proyecto(current)
 
     def _cargar_configuracion_proyecto(self, proyecto):
+        if self.file_generator and self.file_generator.is_alive():
+            self.file_generator.stop()
+            self.generador_activo_var.set(False)
+
         config = self.config_handler.get_project_config(proyecto)
         if not config:
             return
@@ -246,3 +248,45 @@ class MainWindow:
 
         except Exception as e:
             messagebox.showerror("Error Crítico", f"Se produjo un error:\n{str(e)}")
+
+    def _toggle_generador_archivos(self):
+        if self.generador_activo_var.get():
+            if not self._validar_configuracion_generador():
+                self.generador_activo_var.set(False)
+                return
+            
+            config = self._obtener_config_actual()
+            base_path = config["ruta_base"]
+            
+            if self.file_generator and self.file_generator.is_alive():
+                self.file_generator.stop()
+            
+            self.file_generator = FileGenerator(base_path)
+            self.file_generator.start()
+            messagebox.showinfo(
+                "Generador activado", 
+                f"Monitorizando portapapeles para crear archivos en:\n{base_path}"
+            )
+        else:
+            if self.file_generator:
+                self.file_generator.stop()
+            messagebox.showinfo("Generador desactivado", "La monitorización se ha detenido")
+
+    def _validar_configuracion_generador(self):
+        config = self._obtener_config_actual()
+        
+        if not config["ruta_base"]:
+            messagebox.showerror("Error", "Debes establecer una ruta base para el proyecto")
+            return False
+        
+        if not os.path.exists(config["ruta_base"]):
+            messagebox.showerror("Error", "La ruta base del proyecto no existe")
+            return False
+        
+        return True
+
+    def _obtener_config_actual(self):
+        return {
+            "ruta_base": self.ruta_base_component.get().strip(),
+            "directorio_principal": self.directorio_principal_component.get().strip()
+        }
