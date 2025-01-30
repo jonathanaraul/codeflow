@@ -1,4 +1,4 @@
-# file_generator.py
+# file_generator2.py
 import threading
 import os
 import re
@@ -15,11 +15,11 @@ class FileGenerator(threading.Thread):
         
         # Expresiones regulares actualizadas para detección de rutas
         self.comment_patterns = [
-            r"^//\s*(.+)",  # JavaScript, TypeScript, etc
-            r"^#\s*(.+)",   # Python, Bash
-            r"^--\s*(.+)",  # SQL, Lua
-            r"^\/\*\s*(.+)\*\/",  # CSS/JS block comments
-            r"^<!--\s*(.+)-->"  # HTML/XML
+            r"^//\s*(.+)",        # JavaScript, TypeScript, etc.
+            r"^#\s*(.+)",         # Python, Bash
+            r"^--\s*(.+)",        # SQL, Lua
+            r"^/\*\s*(.+)\*/",    # CSS/JS block comments
+            r"^<!--\s*(.+)-->"    # HTML/XML
         ]
 
     def stop(self):
@@ -27,7 +27,7 @@ class FileGenerator(threading.Thread):
 
     def extract_file_path_from_comment(self, content):
         for pattern in self.comment_patterns:
-            match = re.search(pattern, content, re.MULTILINE)
+            match = re.match(pattern, content)
             if match:
                 return match.group(1).strip()
         return None
