@@ -15,11 +15,11 @@ class FileGenerator(threading.Thread):
         
         # Expresiones regulares actualizadas para detección de rutas
         self.comment_patterns = [
-            r"^//\s*FILE:?\s*(.+)",  # JavaScript, TypeScript, etc
-            r"^#\s*FILE:?\s*(.+)",   # Python, Bash
-            r"^--\s*FILE:?\s*(.+)",  # SQL, Lua
-            r"^\/\*\s*FILE:?\s*(.+)\*\/",  # CSS/JS block comments
-            r"^<!--\s*FILE:?\s*(.+)-->"  # HTML/XML
+            r"^//\s*(.+)",  # JavaScript, TypeScript, etc
+            r"^#\s*(.+)",   # Python, Bash
+            r"^--\s*(.+)",  # SQL, Lua
+            r"^\/\*\s*(.+)\*\/",  # CSS/JS block comments
+            r"^<!--\s*(.+)-->"  # HTML/XML
         ]
 
     def stop(self):

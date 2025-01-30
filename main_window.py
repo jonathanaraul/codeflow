@@ -53,20 +53,23 @@ class MainWindow:
         )
         self.project_selector.frame.pack(fill=tk.X, pady=5)
 
+        ruta_frame = ttk.Frame(self.right_panel, style='TFrame')
+        ruta_frame.pack(fill=tk.X, pady=5)
+
         self.ruta_base_component = LabeledEntry(
-            self.right_panel,
+            ruta_frame,
             self.style_manager,
             "RUTA BASE DEL PROYECTO:"
         )
-        self.ruta_base_component.frame.pack(fill=tk.X, pady=5)
+        self.ruta_base_component.frame.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
         self.btn_seleccionar = CustomButton(
-            self.right_panel,
+            ruta_frame,
             self.style_manager,
             "📂 Seleccionar Ruta",
             self._seleccionar_ruta_base
         )
-        self.btn_seleccionar.pack(pady=10, ipadx=10)
+        self.btn_seleccionar.pack(side=tk.RIGHT, padx=(10, 0))
 
         self.prompt_text = ScrolledText(self.right_panel, self.style_manager, 6)
         ttk.Label(self.right_panel, text="PROMPT DE CONTEXTO:").pack(pady=(15, 5), anchor=tk.W)
