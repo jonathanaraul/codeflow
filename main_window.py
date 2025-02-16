@@ -19,6 +19,7 @@ class MainWindow:
         self.file_processor = file_processor
         self.current_project = None
         self.incluir_ruta_var = tk.BooleanVar(value=True)
+        self.solo_archivos_especificos_var = tk.BooleanVar(value=False)
         self.generador_activo_var = tk.BooleanVar(value=False)
         self.file_generator = None
 
@@ -85,6 +86,13 @@ class MainWindow:
             variable=self.incluir_ruta_var,
             style='TCheckbutton'
         ).pack(pady=(15, 5), anchor=tk.W)
+
+        ttk.Checkbutton(
+            self.right_panel,
+            text="Solo archivos específicos",
+            variable=self.solo_archivos_especificos_var,
+            style='TCheckbutton'
+        ).pack(pady=(5, 5), anchor=tk.W)
 
         ttk.Checkbutton(
             self.right_panel,
@@ -174,6 +182,7 @@ class MainWindow:
         self.prompt_text.delete()
         self.prompt_text.insert(config.get("prompt", ""))
         self.patron_component.set(config.get("patron", ""))
+        self.solo_archivos_especificos_var.set(config.get("solo_archivos_especificos", False))
         self.solicitud_text.delete()
 
     def _nuevo_proyecto(self):
@@ -202,6 +211,7 @@ class MainWindow:
         self.prompt_text.delete()
         self.solicitud_text.delete()
         self.patron_component.set("")
+        self.solo_archivos_especificos_var.set(False)
 
     def _seleccionar_ruta_base(self):
         ruta = filedialog.askdirectory()
@@ -222,7 +232,8 @@ class MainWindow:
             "archivos_prohibidos": self.archivos_prohibidos_text.get().strip(),
             "formatos_prohibidos": self.formatos_prohibidos_component.get().strip(),
             "prompt": self.prompt_text.get().strip(),
-            "patron": self.patron_component.get().strip()
+            "patron": self.patron_component.get().strip(),
+            "solo_archivos_especificos": self.solo_archivos_especificos_var.get()
         }
 
         try:
@@ -257,17 +268,17 @@ class MainWindow:
             if not self._validar_configuracion_generador():
                 self.generador_activo_var.set(False)
                 return
-            
+
             config = self._obtener_config_actual()
             base_path = config["ruta_base"]
-            
+
             if self.file_generator and self.file_generator.is_alive():
                 self.file_generator.stop()
-            
+
             self.file_generator = FileGenerator(base_path)
             self.file_generator.start()
             messagebox.showinfo(
-                "Generador activado", 
+                "Generador activado",
                 f"Monitorizando portapapeles para crear archivos en:\n{base_path}"
             )
         else:
@@ -277,15 +288,15 @@ class MainWindow:
 
     def _validar_configuracion_generador(self):
         config = self._obtener_config_actual()
-        
+
         if not config["ruta_base"]:
             messagebox.showerror("Error", "Debes establecer una ruta base para el proyecto")
             return False
-        
+
         if not os.path.exists(config["ruta_base"]):
             messagebox.showerror("Error", "La ruta base del proyecto no existe")
             return False
-        
+
         return True
 
     def _obtener_config_actual(self):

@@ -23,12 +23,13 @@
         "bolivarflash": {
             "ruta_base": "C:/Users/jonat/Documents/Repositorios/bolivarflashv2",
             "directorio_principal": "",
-            "archivos": "",
+            "archivos": "public/js/homeSearch.js,public/js/orderHandler.js,src/controllers/adminController.ts,src/controllers/authController.ts,src/controllers/orderController.ts,src/views/partials/homeContent.ejs,src/views/partials/transactionDetails.ejs,src/views/partials/transactionContent.ejs,src/views/layouts/mainLayout.ejs,src/views/partials/adminOrdersContent.ejs,src/views/partials/adminUsersContent.ejs,src/routes/authRoutes.ts,src/routes/orderRoutes.ts,scraperRoutes.ts,src/middleware/errorHandler.ts,src/middleware/authMiddleware.ts,src/middleware/adminMiddleware.ts,src/server.ts,package.json",
             "directorios_prohibidos": "node_modules",
-            "archivos_prohibidos": "",
+            "archivos_prohibidos": "BinanceBsTiers.ts,BinanceUsdTiers.ts,uploadUtils.ts,firestoreService.ts,loginContent.ejs,header.ejs,footer.ejs,editUserModal.ejs,deleteUserModal.ejs,userLayout.ejs,registerContent.ejs,orderConfirmationContent.ejs,viewProofModal.ejs,register.ejs,login.ejs,authController.ts,es.json,adminUsersContent.ejs",
             "formatos_prohibidos": "",
-            "prompt": "No elimines funciones, comentarios o fragmentos de c\u00f3digo ya existentes, a menos que sea estrictamente necesario para cumplir con la solicitud.\nSi necesitas realizar cambios, agrega o reemplaza \u00fanicamente lo necesario para satisfacer los requisitos especificados.\n\nDevu\u00e9lveme los archivos COMPLETOS que hayas modificado, asegur\u00e1ndote de que el c\u00f3digo sea totalmente compatible con TypeScript.\nEl c\u00f3digo final no debe generar errores de compilaci\u00f3n ni advertencias de TypeScript.\n\nAseg\u00farate de que cada archivo generado comience con la misma l\u00ednea de comentario que se encuentra en los archivos proporcionados, donde se indica la ubicaci\u00f3n y el nombre del archivo.\n\nAntes de proceder, debes indicarme c\u00f3mo solucionar\u00edas la situaci\u00f3n y proporcionarme la lista de archivos creados o modificados. IMPORTANTE: solo menciona los archivos que tengan cambios reales.\n\nCuando te lo indique, env\u00edame los archivos completos, uno por uno.\nNo debes enviar archivos incompletos, espera mi solicitud antes de enviarlos.\n\nNO ME MUESTRES C\u00d3DIGO HASTA QUE TE LO PIDA.",
-            "patron": ""
+            "prompt": "No elimines funciones, comentarios o fragmentos de c\u00f3digo ya existentes, a menos que sea estrictamente necesario para cumplir con la solicitud.\nSi necesitas realizar cambios, agrega o reemplaza \u00fanicamente lo necesario para satisfacer los requisitos especificados.\n\nDevu\u00e9lveme los archivos COMPLETOS que hayas modificado, asegur\u00e1ndote de que el c\u00f3digo sea totalmente compatible con TypeScript.\nEl c\u00f3digo final no debe generar errores de compilaci\u00f3n ni advertencias de TypeScript.\n\nAseg\u00farate de que cada archivo generado comience con la misma l\u00ednea de comentario que se encuentra en los archivos proporcionados, donde se indica la ubicaci\u00f3n y el nombre del archivo.\n\nAntes de proceder, debes indicarme c\u00f3mo solucionar\u00edas la situaci\u00f3n y proporcionarme la lista de archivos creados o modificados. IMPORTANTE: solo menciona los archivos que tengan cambios reales.\n\nLUEGO YO TE PEDIRE QUE ME PASES EL ARCHIVO CORRESPONDIENTE Y TU RESPONDERAS ENTREGANDOMELO TODO COMPLETO CON LAS CORRECCIONES O AJUSTES",
+            "patron": "",
+            "solo_archivos_especificos": true
         },
         "pythonAPI": {
             "ruta_base": "C:/Users/jonat/Documents/Repositorios/bolivarflash/pythonAPI",
@@ -54,8 +55,8 @@
             "ruta_base": "C:/Users/jonat/Documents/Repositorios/bolivarflashv2",
             "directorio_principal": "",
             "archivos": "",
-            "directorios_prohibidos": "node_modules,public,pythonAPI,.git,locales,enums,utils",
-            "archivos_prohibidos": "package-lock.json,.gitignore,checkEJSFiles.js,mejoras.md,package.json,serviceAccountKey.json,errorHandler.ts,nodemon.json,adminUsersContent.ejs,adminController.ts,error.ejs,firestoreService.ts,.env,tsconfig.json,userLayout.ejs,deleteUserModal.ejs,editUserModal.ejs",
+            "directorios_prohibidos": "node_modules,.git,locales",
+            "archivos_prohibidos": "package-lock.json,.gitignore,checkEJSFiles.js,mejoras.md,package.json,serviceAccountKey.json,jquery-3.7.1.min.js,.env,tsconfig.json,nodemon.json",
             "formatos_prohibidos": "",
             "prompt": "No elimines funciones, comentarios o fragmentos de c\u00f3digo ya existentes a no ser que sea necesario para\ncumplir la solicitud.\nSi necesitas realizar cambios, solo agrega o reemplaza lo estrictamente necesario para cumplir con los requisitos en la solicitud.\nDevu\u00e9lveme los archivos COMPLETOS que hayas modificado, asegur\u00e1ndote de que el c\u00f3digo sea completamente compatible con typescript\n\nEl c\u00f3digo final no debe generar errores de compilaci\u00f3n ni advertencias de typescript\nAseg\u00farate de que cada archivo generado comience con la misma linea que tienen los que te estoy suministrando donde en un comentario se indica la ubicacion y el nombre del archivo\nDebes indicarme primero c\u00f3mo solucionar\u00edas la situaci\u00f3n y proporcionarme la lista de archivos\n creados o modificados IMPORTANTE SOLO LOS ARCHIVOS QUE TENGAN CAMBIOS REALES.\n\nCuando yo te lo indique, comienza a pasarme archivo por archivo COMPLETO.\nNO ME PUEDES PASAR ARCHIVOS INCOMPLETOS, ESPERA QUE YO TE COMIENCE A SOLICITAR LOS ARCHIVOS COMPLETOS\n\nSi generas o modificas un archivo ejs en la primera linea debes agregar un comentario de html en donde especifiques la ruta y el nombre del archivo.\nSi generas o modificas un archivo js o ts o tsx en la primera linea debes agregar un comentario de javascript en donde especifiques la ruta y el nombre del archivo.\n\nNO ME MUESTRES CODIGO HASTA QUE TE LO PIDA",
             "patron": ""
@@ -69,7 +70,27 @@
             "formatos_prohibidos": "",
             "prompt": "",
             "patron": ""
+        },
+        "BinanceAPI": {
+            "ruta_base": "C:/Users/jonat/Documents/Repositorios/binanceAPI",
+            "directorio_principal": "",
+            "archivos": "",
+            "directorios_prohibidos": "__pycache__,.git,venv",
+            "archivos_prohibidos": ".gitignore,README.md,chromedriver.exe",
+            "formatos_prohibidos": "",
+            "prompt": "No elimines funciones, comentarios o fragmentos de c\u00f3digo ya existentes a no ser que sea necesario para\ncumplir la solicitud.\nSi necesitas realizar cambios, solo agrega o reemplaza lo estrictamente necesario para cumplir con los requisitos en la solicitud.\nDevu\u00e9lveme los archivos COMPLETOS que hayas modificado, asegur\u00e1ndote de que el c\u00f3digo sea completamente compatible con Python.\n\nEl c\u00f3digo final no debe generar errores de compilaci\u00f3n ni advertencias de Python.\nAseg\u00farate de que cada archivo generado comience con la misma linea que tienen los que te estoy suministrando donde en un comentario se indica la ubicacion y el nombre del archivo\nDAME EL ARCHIVO COMPLETO CORREGIDO\nNO ME MUESTRES ARCHIVOS QUE NO TENGAN CAMBIOS REALES",
+            "patron": ""
+        },
+        "bfcodigos": {
+            "ruta_base": "C:/Users/jonat/Documents/Repositorios/bfcodigos",
+            "directorio_principal": "",
+            "archivos": "",
+            "directorios_prohibidos": "__pycache__,.git,venv",
+            "archivos_prohibidos": ".env,.gitignore",
+            "formatos_prohibidos": "",
+            "prompt": "No elimines funciones, comentarios o fragmentos de c\u00f3digo ya existentes a no ser que sea necesario para\ncumplir la solicitud.\nSi necesitas realizar cambios, solo agrega o reemplaza lo estrictamente necesario para cumplir con los requisitos en la solicitud.\nDevu\u00e9lveme los archivos COMPLETOS que hayas modificado, asegur\u00e1ndote de que el c\u00f3digo sea completamente compatible con Python.\n\nEl c\u00f3digo final no debe generar errores de compilaci\u00f3n ni advertencias de Python.\nAseg\u00farate de que cada archivo generado comience con la misma linea que tienen los que te estoy suministrando donde en un comentario se indica la ubicacion y el nombre del archivo\nDAME EL ARCHIVO COMPLETO CORREGIDO\nNO ME MUESTRES ARCHIVOS QUE NO TENGAN CAMBIOS REALES",
+            "patron": ""
         }
     },
-    "current_project": "bolivarflashv2"
+    "current_project": "bolivarflash"
 }
