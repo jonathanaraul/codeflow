@@ -13,7 +13,7 @@ class FileProcessor:
 
         directorio_completo = os.path.normpath(
             os.path.join(config["ruta_base"], config["directorio_principal"])
-        ) if config["directorio_principal"] else os.path.normpath(config["ruta_base"])
+        ) if config.get("directorio_principal") else os.path.normpath(config["ruta_base"])
 
         # Procesar formatos prohibidos
         formatos_prohibidos = [
@@ -32,16 +32,17 @@ class FileProcessor:
         if not solo_archivos_especificos and os.path.isdir(directorio_completo):
             directorios_prohibidos = [
                 d.strip()
-                for d in config["directorios_prohibidos"].split(",")
+                for d in config.get("directorios_prohibidos", "").split(",")
                 if d.strip()
             ]
             archivos_prohibidos = [
                 a.strip()
-                for a in config["archivos_prohibidos"].split(",")
+                for a in config.get("archivos_prohibidos", "").split(",")
                 if a.strip()
             ]
 
             for root_dir, dirs, files in os.walk(directorio_completo):
+                # Excluir directorios prohibidos
                 dirs[:] = [d for d in dirs if d not in directorios_prohibidos]
 
                 # Filtrar archivos prohibidos, formatos prohibidos y aplicar patrón si está definido
@@ -66,7 +67,7 @@ class FileProcessor:
         # Procesamiento de archivos específicos
         archivos_especificos = [
             a.strip()
-            for a in config["archivos"].split(",")
+            for a in config.get("archivos", "").split(",")
             if a.strip()
         ]
         for archivo in archivos_especificos:
@@ -75,14 +76,16 @@ class FileProcessor:
             if patron and patron not in nombre_archivo.lower():
                 continue
 
-            archivo_path = os.path.normpath(os.path.join(config["ruta_base"], archivo))
-
-            # Verificar si el formato está prohibido
-            extension = os.path.splitext(archivo_path)[1].lower()
-            if extension in formatos_prohibidos:
-                continue
-
-            if os.path.isfile(archivo_path):
+            # Buscar el archivo recursivamente en directorio_completo, excluyendo los directorios prohibidos
+            archivo_path = FileProcessor._buscar_archivo(
+                directorio_completo,
+                nombre_archivo,
+                [d.strip() for d in config.get("directorios_prohibidos", "").split(",") if d.strip()]
+            )
+            if archivo_path:
+                # Verificar que el formato no esté prohibido
+                if os.path.splitext(archivo_path)[1].lower() in formatos_prohibidos:
+                    continue
                 contenido_total += FileProcessor._leer_archivo(
                     archivo_path,
                     config["ruta_base"],
@@ -92,6 +95,21 @@ class FileProcessor:
                 archivos_no_encontrados.append(archivo)
 
         return contenido_total, archivos_no_encontrados
+
+    @staticmethod
+    def _buscar_archivo(ruta_base, nombre_objetivo, directorios_prohibidos):
+        """
+        Recorre recursivamente la ruta_base buscando un archivo cuyo nombre (case-insensitive)
+        coincida exactamente con nombre_objetivo. Se omiten los directorios que están en la lista
+        de directorios_prohibidos.
+        """
+        for root, dirs, files in os.walk(ruta_base):
+            # Excluir directorios prohibidos
+            dirs[:] = [d for d in dirs if d not in directorios_prohibidos]
+            for file in files:
+                if file.lower() == nombre_objetivo.lower():
+                    return os.path.join(root, file)
+        return None
 
     @staticmethod
     def _leer_archivo(archivo_path, ruta_base, incluir_ruta):

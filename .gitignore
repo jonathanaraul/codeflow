@@ -11,8 +11,12 @@ token.json
 venv/
 env/
 *.env
+venv
 
 # Ignorar otros archivos sensibles o temporales
 *.log
 *.bak
 *.swp
+*.exe
+
+chromedriver.exe
