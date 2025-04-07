@@ -22,6 +22,7 @@ class MainWindow:
         self.incluir_ruta_var = tk.BooleanVar(value=True)
         self.solo_archivos_especificos_var = tk.BooleanVar(value=False)
         self.generador_activo_var = tk.BooleanVar(value=False)
+        self.solo_consulta_var = tk.BooleanVar(value=False) # <--- NUEVA VARIABLE
         self.file_generator = None
 
         screen_width = self.root.winfo_screenwidth()
@@ -124,6 +125,15 @@ class MainWindow:
             style='TCheckbutton'
         ).pack(side=tk.LEFT, padx=(0, 15), anchor=tk.W)
 
+        # --- Cambio: Añadir Checkbox "Solo consulta" ---
+        ttk.Checkbutton(
+            options_frame,
+            text="Solo consulta",
+            variable=self.solo_consulta_var, # Usar la nueva variable
+            style='TCheckbutton'
+        ).pack(side=tk.LEFT, padx=(0, 15), anchor=tk.W)
+        # --- Fin Cambio ---
+
         ttk.Checkbutton(
             options_frame,
             text="Generador de archivos",
@@ -150,16 +160,14 @@ class MainWindow:
 
         self.btn_copiar.button.grid(row=0, column=1, pady=10, padx=5, ipady=5, sticky="ew") # Centrado horizontal
 
-        # --- Cambio: Botón Limpiar Solicitud ---
+        # Botón Limpiar Solicitud
         self.btn_limpiar_solicitud = CustomButton(
              action_button_frame,
              self.style_manager,
              "🧹 Limpiar Solicitud",
-             self._limpiar_solicitud # Llama a la nueva función
+             self._limpiar_solicitud
         )
-        # Colocarlo al lado derecho del botón Copiar
         self.btn_limpiar_solicitud.button.grid(row=0, column=2, pady=10, padx=5, ipady=5, sticky="ew")
-        # --- Fin Cambio ---
 
 
     def _create_left_panel_widgets(self):
@@ -256,12 +264,11 @@ class MainWindow:
             self.patron_component.set(config.get("patron", ""))
             self.solo_archivos_especificos_var.set(config.get("solo_archivos_especificos", False))
             self.solicitud_text.delete() # Limpiar solicitud anterior al cambiar de proyecto
+            self.solo_consulta_var.set(False) # Resetear "Solo consulta" al cambiar de proyecto
 
-            # --- Cambio: Actualizar timestamp al seleccionar ---
+            # Actualizar timestamp al seleccionar
             if update_timestamp:
                  self.config_handler.set_current_project(proyecto)
-                 # No es necesario recargar la lista aquí, solo se actualiza el timestamp
-            # --- Fin Cambio ---
 
             self.current_project = proyecto # Actualizar variable interna
 
@@ -280,11 +287,7 @@ class MainWindow:
              nuevo_nombre = nuevo_nombre.strip() # Limpiar espacios
              try:
                  self.config_handler.create_new_project(nuevo_nombre)
-                 # No es necesario set_current_project aquí, _cargar_proyectos lo hará
                  self._cargar_proyectos() # Recargar la lista (ahora ordenada)
-                 # El nuevo proyecto debería aparecer y seleccionarse si es el único
-                 # o si _cargar_proyectos lo selecciona por defecto.
-                 # Asegurarse de que está seleccionado y cargado
                  if nuevo_nombre in self.project_selector.combobox["values"]:
                       self.project_selector.set_selected(nuevo_nombre)
                       self._cargar_configuracion_proyecto(nuevo_nombre, update_timestamp=True) # Cargar y marcar como usado
@@ -310,16 +313,15 @@ class MainWindow:
         self.patron_component.set("")
         self.solo_archivos_especificos_var.set(False)
         self.incluir_ruta_var.set(True) # Valor por defecto
+        self.solo_consulta_var.set(False) # Resetear
         if limpiar_proyecto_actual:
              self.project_selector.set_selected("") # Deseleccionar combobox
              self.current_project = None
 
-    # --- Cambio: Nueva función para limpiar solicitud ---
     def _limpiar_solicitud(self):
         """Borra el contenido del área de texto de la solicitud actual."""
         self.solicitud_text.delete()
         print("[GUI] Solicitud actual limpiada.") # Log opcional
-    # --- Fin Cambio ---
 
     def _seleccionar_ruta_base(self):
         """Abre diálogo para seleccionar directorio de ruta base."""
@@ -361,48 +363,51 @@ class MainWindow:
             )
 
             if not contenido and not no_encontrados:
-                 # Si no hay contenido y tampoco archivos no encontrados (probablemente por filtros muy estrictos)
-                 messagebox.showwarning("Sin Contenido", "No se encontró ningún archivo que coincidiera con los filtros aplicados.")
-                 return # No copiar ni guardar si no hubo nada que procesar
+                # Si no hay contenido y tampoco archivos no encontrados (probablemente por filtros muy estrictos)
+                messagebox.showwarning("Sin Contenido", "No se encontró ningún archivo que coincidiera con los filtros aplicados.")
+                return # No copiar ni guardar si no hubo nada que procesar
 
             # Solo copiar y guardar si se generó algún contenido (aunque haya archivos no encontrados)
             if contenido:
-                 prompt_text = config_data['prompt']
-                 solicitud_text = self.solicitud_text.get().strip()
+                prompt_text = config_data['prompt']
+                solicitud_text = self.solicitud_text.get().strip()
 
-                 # Construir el texto final
-                 partes_finales = []
-                 if prompt_text:
-                     partes_finales.append(prompt_text)
-                 if solicitud_text:
-                      # Añadir prefijo claro a la solicitud
-                      partes_finales.append(f"--- SOLICITUD ---\n{solicitud_text}")
+                # Construir el texto final
+                partes_finales = []
 
-                 # Añadir el contenido de los archivos
-                 partes_finales.append(f"--- CONTEXTO ARCHIVOS ({'Rutas Incluidas' if self.incluir_ruta_var.get() else 'Solo Nombres'}) ---{contenido}")
+                # --- Cambio: Incluir prompt solo si "Solo consulta" NO está marcado ---
+                if prompt_text and not self.solo_consulta_var.get():
+                    partes_finales.append(prompt_text)
+                # --- Fin Cambio ---
 
-                 final_content = "\n\n".join(partes_finales).strip() # Unir con doble salto de línea
+                if solicitud_text:
+                    # Añadir prefijo claro a la solicitud
+                    partes_finales.append(f"--- SOLICITUD ---\n{solicitud_text}")
 
-                 try:
-                      pyperclip.copy(final_content)
-                      # Guardar la configuración ANTES de mostrar el mensaje de éxito
-                      self.config_handler.save_project_config(proyecto_actual, config_data)
-                      # La llamada a save_project_config ya actualiza el timestamp via set_current_project
-                      # self.config_handler.set_current_project(proyecto_actual) # Ya no es necesario aquí
+                # Añadir el contenido de los archivos
+                partes_finales.append(f"--- CONTEXTO ARCHIVOS ({'Rutas Incluidas' if self.incluir_ruta_var.get() else 'Solo Nombres'}) ---{contenido}")
 
-                      mensaje = "Contenido copiado y configuración guardada."
-                      if no_encontrados:
-                           mensaje += "\n\nArchivos específicos no encontrados:\n- " + "\n- ".join(no_encontrados)
-                      messagebox.showinfo("Operación Exitosa", mensaje)
+                final_content = "\n\n".join(partes_finales).strip() # Unir con doble salto de línea
 
-                 except pyperclip.PyperclipException as clip_error:
-                      messagebox.showerror("Error Copiando", f"No se pudo copiar al portapapeles: {clip_error}")
-                 except Exception as save_error:
-                      messagebox.showerror("Error Guardando", f"Contenido copiado, pero hubo un error al guardar la configuración: {save_error}")
+                try:
+                     pyperclip.copy(final_content)
+                     # Guardar la configuración ANTES de mostrar el mensaje de éxito
+                     self.config_handler.save_project_config(proyecto_actual, config_data)
+                     # La llamada a save_project_config ya actualiza el timestamp via set_current_project
+
+                     mensaje = "Contenido copiado y configuración guardada."
+                     if no_encontrados:
+                         mensaje += "\n\nArchivos específicos no encontrados:\n- " + "\n- ".join(no_encontrados)
+                     messagebox.showinfo("Operación Exitosa", mensaje)
+
+                except pyperclip.PyperclipException as clip_error:
+                     messagebox.showerror("Error Copiando", f"No se pudo copiar al portapapeles: {clip_error}")
+                except Exception as save_error:
+                     messagebox.showerror("Error Guardando", f"Contenido copiado, pero hubo un error al guardar la configuración: {save_error}")
 
             elif no_encontrados:
-                 # Si solo hubo archivos no encontrados, informar sin copiar/guardar
-                 messagebox.showwarning("Archivos No Encontrados", "No se generó contenido.\nArchivos específicos no encontrados:\n- " + "\n- ".join(no_encontrados))
+                # Si solo hubo archivos no encontrados, informar sin copiar/guardar
+                messagebox.showwarning("Archivos No Encontrados", "No se generó contenido.\nArchivos específicos no encontrados:\n- " + "\n- ".join(no_encontrados))
 
         except Exception as e:
             messagebox.showerror("Error Crítico en Procesamiento", f"Se produjo un error inesperado al procesar los archivos:\n{str(e)}")
@@ -430,9 +435,6 @@ class MainWindow:
                      "Generador Activado",
                      f"Monitorizando portapapeles para crear archivos en:\n{base_path}"
                  )
-                 # Deshabilitar campos que no deben cambiarse mientras corre? (Opcional)
-                 # self.ruta_base_component.entry.config(state='disabled')
-                 # self.btn_seleccionar.button.config(state='disabled')
 
             except Exception as e:
                  messagebox.showerror("Error Iniciando Generador", f"No se pudo iniciar el generador: {str(e)}")
@@ -444,16 +446,11 @@ class MainWindow:
                 self.file_generator.join(timeout=1) # Esperar que termine el hilo
                 messagebox.showinfo("Generador Desactivado", "La monitorización del portapapeles se ha detenido.")
             elif self.file_generator:
-                 # Si el objeto existe pero no está vivo (ya terminó o hubo error)
                  print("[Generador] Ya estaba detenido.") # Log interno
             else:
-                 # Si nunca se inició
                  print("[Generador] No estaba activo.")
 
             self.file_generator = None # Limpiar referencia
-            # Habilitar campos si se deshabilitaron
-            # self.ruta_base_component.entry.config(state='normal')
-            # self.btn_seleccionar.button.config(state='normal')
 
 
     def _validar_configuracion_generador(self):
@@ -469,32 +466,25 @@ class MainWindow:
             messagebox.showerror("Error: Ruta Base Inválida", f"La Ruta Base especificada no existe o no es un directorio:\n{ruta_base}")
             return False
 
-        # Podríamos añadir un chequeo de permisos de escritura si fuera necesario
-        # if not os.access(ruta_base, os.W_OK):
-        #     messagebox.showerror("Error: Permisos Insuficientes", f"No tienes permisos de escritura en la Ruta Base:\n{ruta_base}")
-        #     return False
-
         return True
 
     def _obtener_config_actual(self):
         """Devuelve un diccionario con la configuración mínima actual de la GUI."""
-        # Solo necesitamos la ruta base para el generador por ahora
         return {
             "ruta_base": self.ruta_base_component.get().strip(),
-            # "directorio_principal": self.directorio_principal_component.get().strip() # Podría ser útil después
         }
 
     def _on_closing(self):
          """Maneja el evento de cierre de la ventana."""
          if self.file_generator and self.file_generator.is_alive():
-              if messagebox.askyesno("Generador Activo", "El generador de archivos está activo. ¿Deseas detenerlo y salir?"):
-                   self.file_generator.stop()
-                   self.file_generator.join(timeout=1) # Dar tiempo a detenerse
-                   self.root.destroy()
-              else:
-                   return # No cerrar si el usuario cancela
+             if messagebox.askyesno("Generador Activo", "El generador de archivos está activo. ¿Deseas detenerlo y salir?"):
+                 self.file_generator.stop()
+                 self.file_generator.join(timeout=1) # Dar tiempo a detenerse
+                 self.root.destroy()
+             else:
+                 return # No cerrar si el usuario cancela
          else:
-              if messagebox.askokcancel("Salir", "¿Estás seguro de que quieres salir?"):
-                   self.root.destroy()
+             if messagebox.askokcancel("Salir", "¿Estás seguro de que quieres salir?"):
+                 self.root.destroy()
 
 # --- Fin de la clase MainWindow ---
