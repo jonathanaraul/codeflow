@@ -6,6 +6,7 @@ __pycache__/
 credentials.json
 firebase.json
 token.json
+projects_config.json
 
 # Ignorar entornos virtuales (si usas uno)
 venv/
