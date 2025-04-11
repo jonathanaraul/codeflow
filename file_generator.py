@@ -79,7 +79,11 @@ class FileGenerator(threading.Thread):
                         if os.path.commonpath([self.base_directory]) != os.path.commonpath([self.base_directory, full_path]):
                             print("[File Generator] Intento de escribir fuera del directorio base bloqueado")
                             continue
-
+                        # --- NUEVA COMPROBACIÓN: Verificar si el archivo tiene extensión ---
+                        if not os.path.splitext(full_path)[1]:
+                            print(f"[File Generator] Bloqueado: El archivo '{relative_path}' no tiene extensión.")
+                            continue # Saltar la creación si no hay extensión
+                        # --- FIN NUEVA COMPROBACIÓN ---
                         self.create_file(full_path, clipboard_content)
 
                 time.sleep(0.5)

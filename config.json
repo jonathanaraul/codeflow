@@ -1,5 +1,5 @@
 {
-    "current_project": "codeflow",
+    "current_project": "BuscadorCorreosHS",
     "projects": {
         "copiador": {
             "ruta_base": "C:/Users/jonat/Documents/Repositorios/copiadorPython",
@@ -236,10 +236,43 @@
             "ruta_base": "C:\\Users\\jonat\\Documents\\Repositorios\\BuscadorOfertasHS",
             "directorio_principal": "",
             "archivos": "",
-            "directorios_prohibidos": "__pycache__,venv,.git",
+            "directorios_prohibidos": "__pycache__,venv,.git,logs,output",
             "archivos_prohibidos": ".env,.git",
-            "formatos_prohibidos": ".log,.tmp,.bak",
+            "formatos_prohibidos": ".log,.tmp,.bak,.csv",
             "prompt": "No elimines funciones, comentarios o fragmentos de c\u00f3digo ya existentes a no ser que sea necesario para\ncumplir la solicitud.\nSi necesitas realizar cambios, solo agrega o reemplaza lo estrictamente necesario para cumplir con los requisitos en la solicitud.\nDevu\u00e9lveme los archivos COMPLETOS que hayas modificado, asegur\u00e1ndote de que el c\u00f3digo sea completamente compatible con Python.\n\nEl c\u00f3digo final no debe generar errores de compilaci\u00f3n ni advertencias de Python.\nAseg\u00farate de que cada archivo generado comience con la misma linea que tienen los que te estoy suministrando donde en un comentario se indica la ubicacion y el nombre del archivo\nDAME EL ARCHIVO COMPLETO CORREGIDO\nNO ME MUESTRES ARCHIVOS QUE NO TENGAN CAMBIOS REALES\nEn cada primera linea agrega la ubicacion y nombre de archivo ejemplo # computrabajo/main.py",
+            "patron": "",
+            "solo_archivos_especificos": false
+        },
+        "C:\\Users\\jonat\\Documents\\Repositorios\\BuscadorWebsHS": {
+            "ruta_base": "",
+            "directorio_principal": "",
+            "archivos": "",
+            "directorios_prohibidos": "node_modules,.git,.vscode,dist,build",
+            "archivos_prohibidos": ".env",
+            "formatos_prohibidos": ".log,.tmp,.bak",
+            "prompt": "",
+            "patron": "",
+            "solo_archivos_especificos": false
+        },
+        "BuscadorWebsHS": {
+            "ruta_base": "C:\\Users\\jonat\\Documents\\Repositorios\\BuscadorWebsHS",
+            "directorio_principal": "",
+            "archivos": "",
+            "directorios_prohibidos": "__pycache__,.git",
+            "archivos_prohibidos": ".env,__init__.py",
+            "formatos_prohibidos": ".log,.tmp,.bak,.csv,.json",
+            "prompt": "No elimines funciones, comentarios o fragmentos de c\u00f3digo ya existentes a no ser que sea necesario para\ncumplir la solicitud.\nSi necesitas realizar cambios, solo agrega o reemplaza lo estrictamente necesario para cumplir con los requisitos en la solicitud.\nDevu\u00e9lveme los archivos COMPLETOS que hayas modificado, asegur\u00e1ndote de que el c\u00f3digo sea completamente compatible con Python.\n\nEl c\u00f3digo final no debe generar errores de compilaci\u00f3n ni advertencias de Python.\nAseg\u00farate de que cada archivo generado comience con la misma linea que tienen los que te estoy suministrando donde en un comentario se indica la ubicacion y el nombre del archivo\nDAME EL ARCHIVO COMPLETO CORREGIDO\nNO ME MUESTRES ARCHIVOS QUE NO TENGAN CAMBIOS REALES\nEn cada primera linea agrega la ubicacion y nombre de archivo ejemplo # main.py",
+            "patron": "",
+            "solo_archivos_especificos": false
+        },
+        "BuscadorCorreosHS": {
+            "ruta_base": "C:\\Users\\jonat\\Documents\\Repositorios\\BuscadorCorreosHS",
+            "directorio_principal": "",
+            "archivos": "",
+            "directorios_prohibidos": "__pycache__,.git,logs",
+            "archivos_prohibidos": ".gitignore",
+            "formatos_prohibidos": ".log,.tmp,.bak,.json",
+            "prompt": "No elimines funciones, comentarios o fragmentos de c\u00f3digo ya existentes a no ser que sea necesario para\ncumplir la solicitud.\nSi necesitas realizar cambios, solo agrega o reemplaza lo estrictamente necesario para cumplir con los requisitos en la solicitud.\nDevu\u00e9lveme los archivos COMPLETOS que hayas modificado, asegur\u00e1ndote de que el c\u00f3digo sea completamente compatible con Python.\n\nEl c\u00f3digo final no debe generar errores de compilaci\u00f3n ni advertencias de Python.\nAseg\u00farate de que cada archivo generado comience con la misma linea que tienen los que te estoy suministrando donde en un comentario se indica la ubicacion y el nombre del archivo\nDAME EL ARCHIVO COMPLETO CORREGIDO\nNO ME MUESTRES ARCHIVOS QUE NO TENGAN CAMBIOS REALES\nEn cada primera linea agrega la ubicacion y nombre de archivo ejemplo # main.py",
             "patron": "",
             "solo_archivos_especificos": false
         }
@@ -258,7 +291,7 @@
             "last_used": 1712336824.0
         },
         "codeflow": {
-            "last_used": 1743999858.661744
+            "last_used": 1744170361.9623425
         },
         "bolivarflashv2": {
             "last_used": 1712336822.0
@@ -309,7 +342,16 @@
             "last_used": 1712336807.0
         },
         "BuscadorOfertasHS": {
-            "last_used": 1743925898.0263083
+            "last_used": 1744168508.0961075
+        },
+        "C:\\Users\\jonat\\Documents\\Repositorios\\BuscadorWebsHS": {
+            "last_used": 1744158454.4149742
+        },
+        "BuscadorWebsHS": {
+            "last_used": 1744267144.850144
+        },
+        "BuscadorCorreosHS": {
+            "last_used": 1744347463.555721
         }
     }
 }
