@@ -1,5 +1,5 @@
 {
-    "current_project": "BuscadorCorreosHS",
+    "current_project": "codeflow",
     "projects": {
         "copiador": {
             "ruta_base": "C:/Users/jonat/Documents/Repositorios/copiadorPython",
@@ -214,10 +214,10 @@
             "ruta_base": "C:/Users/jonat/Documents/Repositorios/Hispanos",
             "directorio_principal": "",
             "archivos": "",
-            "directorios_prohibidos": "node_modules,.git,dist,logs,vendor,plantilla,images",
-            "archivos_prohibidos": "package-lock.json,bootstrap.min.js,jquery-3.6.0.min.js,.env,.gitignore",
-            "formatos_prohibidos": "svg,json,css,png,jpg",
-            "prompt": "PRIMERO TE DARE CONTEXTO ANALIZALO Y LUEGO ANALIZA MI SOLICITUD\nNO ME DES ARCHIVOS INCOMPLETOS BAJO NINGUN MOTIVO\nSOLO DEBES PROPORCIONARME LOS ARCHIVOS QUE HAYAS CREADO O EN LOS QUE HAYAS HECHO CAMBIOS REALES ME REFIERO A CAMBIOS EN EL CODIGO NO A CAMBIOS EN COMENTARIOS\nAgrega en cada archivo un unico comentario con la ubicacion y el nombre ejemplo:  , Ese es el unico tipo de comentario que tienes permitido agregar, cualquier otro comentario que no sea ubicacion y nombre de archivo debe ser borrado. \nNO PUEDES AGREGAR OTROS COMENTARIOS SOLO EL DE LA PRIMERA LINEA\n\nPOR FAVOR HAZ TUS CAMBIOS METICULOSAMENTE SI NECESITAS MODIFICAR UNA VISTA TUS CAMBIOS NO DEBEN PERJUDICAR EL DISE\u00d1O\nNO AGREGUES COMENTARIOS Y SI ENCUENTRAS BORRALOS INCLYENDO LOS JSDoc A NO SER QUE SEAN EL DE LA PRIMERA LINEA CON UBICACION Y NOMBRE, ESE TIPO DE COMENTARIOS SI MANTENLO\n\nLimitate a modificar estrictamente las funcionalidades que te se\u00f1alo en mi solicitud, no alteres otras funcionalidades a no ser que sea estrictamente necesario para cumplir mi solicitud",
+            "directorios_prohibidos": "node_modules,.git,dist,logs,vendor,plantilla,images,phpmailer,admin,client,vendor",
+            "archivos_prohibidos": "package-lock.json,bootstrap.min.js,jquery-3.6.0.min.js,.env,.gitignore,isotope.pkgd.min.js,anm.js,map-cluster-rating.js,admin.controller.ts,client.controller.ts",
+            "formatos_prohibidos": ".svg,.css,.png,.jpg,.scss,.eot,.ttf,.woff,.woff2,.map,.ini,.json",
+            "prompt": "PRIMERO TE DARE CONTEXTO ANALIZALO Y LUEGO ANALIZA MI SOLICITUD\nNO ME DES ARCHIVOS INCOMPLETOS BAJO NINGUN MOTIVO\nSOLO DEBES PROPORCIONARME LOS ARCHIVOS QUE HAYAS CREADO O EN LOS QUE HAYAS HECHO CAMBIOS REALES ME REFIERO A CAMBIOS EN EL CODIGO NO A CAMBIOS EN COMENTARIOS\nAgrega en cada archivo un unico comentario con la ubicacion y el nombre ejemplo:  , Ese es el unico tipo de comentario que tienes permitido agregar, cualquier otro comentario que no sea ubicacion y nombre de archivo debe ser borrado. \nNO PUEDES AGREGAR OTROS COMENTARIOS SOLO EL DE LA PRIMERA LINEA\n\nPOR FAVOR HAZ TUS CAMBIOS METICULOSAMENTE SI NECESITAS MODIFICAR UNA VISTA TUS CAMBIOS NO DEBEN PERJUDICAR EL DISE\u00d1O\nNO AGREGUES COMENTARIOS Y SI ENCUENTRAS BORRALOS INCLYENDO LOS JSDoc A NO SER QUE SEAN EL DE LA PRIMERA LINEA CON UBICACION Y NOMBRE, ESE TIPO DE COMENTARIOS SI MANTENLO\n\nLimitate a modificar estrictamente las funcionalidades que te se\u00f1alo en mi solicitud, no alteres otras funcionalidades a no ser que sea estrictamente necesario para cumplir mi solicitud\n\nNO PUEDES MODIFICAR OTRAS PARTES DEL CODIGO QUE NO ESTEN VINCULADAS A MI SOLICITUD, TIENES TERMINANTEMENTE PROHIBIDO HACER ESO, no quiero cambios en funciones que no esten relacionadas con mis cambios.\n\nCUANDO GENERES CODIGO EN CADA ARCHIVO COLOCALE UN COMENTARIO CON SU UBICACION Y NOMBRE INCLUSO HASTA PARA LOS ejs con un comentario especial similar a este <!--  src/views/csv/file.ejs -->\n\nDAME UNA PEQUE\u00d1A EXPLICACION DE LO QUE HARAS ANTES DE EMPEZAR A PROGRAMAR",
             "patron": "",
             "solo_archivos_especificos": false
         },
@@ -236,10 +236,10 @@
             "ruta_base": "C:\\Users\\jonat\\Documents\\Repositorios\\BuscadorOfertasHS",
             "directorio_principal": "",
             "archivos": "",
-            "directorios_prohibidos": "__pycache__,venv,.git,logs,output",
-            "archivos_prohibidos": ".env,.git",
-            "formatos_prohibidos": ".log,.tmp,.bak,.csv",
-            "prompt": "No elimines funciones, comentarios o fragmentos de c\u00f3digo ya existentes a no ser que sea necesario para\ncumplir la solicitud.\nSi necesitas realizar cambios, solo agrega o reemplaza lo estrictamente necesario para cumplir con los requisitos en la solicitud.\nDevu\u00e9lveme los archivos COMPLETOS que hayas modificado, asegur\u00e1ndote de que el c\u00f3digo sea completamente compatible con Python.\n\nEl c\u00f3digo final no debe generar errores de compilaci\u00f3n ni advertencias de Python.\nAseg\u00farate de que cada archivo generado comience con la misma linea que tienen los que te estoy suministrando donde en un comentario se indica la ubicacion y el nombre del archivo\nDAME EL ARCHIVO COMPLETO CORREGIDO\nNO ME MUESTRES ARCHIVOS QUE NO TENGAN CAMBIOS REALES\nEn cada primera linea agrega la ubicacion y nombre de archivo ejemplo # computrabajo/main.py",
+            "directorios_prohibidos": "__pycache__,venv,.git,logs,computrabajo,indeed-extension,infojobs-extension,linkedin-extension,scrapers,researchers",
+            "archivos_prohibidos": ".gitignore,Instrucciones.txt,hispanos-v4.json,webs.json",
+            "formatos_prohibidos": ".log,.tmp,.bak,.csv,.md,.mp3",
+            "prompt": "No elimines funciones, comentarios o fragmentos de c\u00f3digo ya existentes a no ser que sea necesario para\ncumplir la solicitud.\nSi necesitas realizar cambios, solo agrega o reemplaza lo estrictamente necesario para cumplir con los requisitos en la solicitud.\nDevu\u00e9lveme los archivos COMPLETOS que hayas modificado, asegur\u00e1ndote de que el c\u00f3digo sea completamente compatible con Python.\n\nEl c\u00f3digo final no debe generar errores de compilaci\u00f3n ni advertencias de Python.\nAseg\u00farate de que cada archivo generado comience con la misma linea que tienen los que te estoy suministrando donde en un comentario se indica la ubicacion y el nombre del archivo\nDAME EL ARCHIVO COMPLETO CORREGIDO\nNO ME MUESTRES ARCHIVOS QUE NO TENGAN CAMBIOS REALES\nEn cada primera linea agrega la ubicacion y nombre de archivo ejemplo # computrabajo/main.py\n\nCRITICO: TIENES PROHIBIDO MODIFICAR LINEAS QUE NO ESTEN RELACIONADAS CON LOS CAMBIOS QUE TE ESTOY SOLICITANDO EN MI SOLICITUD\n\nCRITICO: LIMITATE A HACER TUS CAMBIOS SIN AGREGAR COMENTARIOS CONTEXTUALES DEL TIPO --- MODIFICATION START SOLO QUIERO CAMBIOS DE CODIGOS REALES\n\nCRITICO: TIENES PROHIBIDO MODIFICAR LINEAS QUE NO ESTEN RELACIONADAS CON LOS CAMBIOS QUE TE ESTOY SOLICITANDO EN MI SOLICITUD\n\n\nIMPORTANTE, SIEMPRE ANTES DE COMENZAR A PROGRAMAR DAME UNA PEQUE\u00d1A Y RESUMIDA EXPLICACION DE PORQUE ESTA SUCEDIENDO EL PROBLEMA",
             "patron": "",
             "solo_archivos_especificos": false
         },
@@ -275,6 +275,17 @@
             "prompt": "No elimines funciones, comentarios o fragmentos de c\u00f3digo ya existentes a no ser que sea necesario para\ncumplir la solicitud.\nSi necesitas realizar cambios, solo agrega o reemplaza lo estrictamente necesario para cumplir con los requisitos en la solicitud.\nDevu\u00e9lveme los archivos COMPLETOS que hayas modificado, asegur\u00e1ndote de que el c\u00f3digo sea completamente compatible con Python.\n\nEl c\u00f3digo final no debe generar errores de compilaci\u00f3n ni advertencias de Python.\nAseg\u00farate de que cada archivo generado comience con la misma linea que tienen los que te estoy suministrando donde en un comentario se indica la ubicacion y el nombre del archivo\nDAME EL ARCHIVO COMPLETO CORREGIDO\nNO ME MUESTRES ARCHIVOS QUE NO TENGAN CAMBIOS REALES\nEn cada primera linea agrega la ubicacion y nombre de archivo ejemplo # main.py",
             "patron": "",
             "solo_archivos_especificos": false
+        },
+        "indeed-extension": {
+            "ruta_base": "C:\\Users\\jonat\\Documents\\Repositorios\\indeed-extension",
+            "directorio_principal": "",
+            "archivos": "",
+            "directorios_prohibidos": "node_modules,.git,datos",
+            "archivos_prohibidos": ".env",
+            "formatos_prohibidos": ".log,.tmp,.bak",
+            "prompt": "Siempre debes entregarme los archivos completos \nEstos archivos siempre deben comenzar con un comentario ejemplo\n//proyect.js\n//proyect.json\n//index.html\n\nMi proyecto es una extension de chrome",
+            "patron": "",
+            "solo_archivos_especificos": false
         }
     },
     "project_metadata": {
@@ -291,7 +302,7 @@
             "last_used": 1712336824.0
         },
         "codeflow": {
-            "last_used": 1744170361.9623425
+            "last_used": 1745653851.4765863
         },
         "bolivarflashv2": {
             "last_used": 1712336822.0
@@ -336,13 +347,13 @@
             "last_used": 1712336809.0
         },
         "hispanos": {
-            "last_used": 1743908301.987765
+            "last_used": 1745653044.9140117
         },
         "EnviaCorreosHSDestacados": {
             "last_used": 1712336807.0
         },
         "BuscadorOfertasHS": {
-            "last_used": 1744168508.0961075
+            "last_used": 1745636081.7524667
         },
         "C:\\Users\\jonat\\Documents\\Repositorios\\BuscadorWebsHS": {
             "last_used": 1744158454.4149742
@@ -351,7 +362,10 @@
             "last_used": 1744267144.850144
         },
         "BuscadorCorreosHS": {
-            "last_used": 1744347463.555721
+            "last_used": 1744672039.2096245
+        },
+        "indeed-extension": {
+            "last_used": 1744865846.8038673
         }
     }
 }
