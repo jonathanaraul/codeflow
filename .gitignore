@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+config.json
 credentials.json
 firebase.json
 token.json
