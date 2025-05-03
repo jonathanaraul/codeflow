@@ -362,14 +362,40 @@ class MainWindow:
                 prompt_text = config_data['prompt']
                 solicitud_text = self.solicitud_text.get().strip()
 
+                # --- INICIO: Leer instrucciones adicionales ---
+                instrucciones_adicionales = ""
+                # Construir la ruta relativa al script actual
+                script_dir = os.path.dirname(__file__)
+                ruta_instrucciones = os.path.join(script_dir, 'instructions', 'formato_instrucciones.txt')
+                try:
+                    with open(ruta_instrucciones, 'r', encoding='utf-8') as f_inst:
+                        instrucciones_leidas = f_inst.read().strip()
+                    if instrucciones_leidas:
+                        # Agregar delimitador solo si hay contenido
+                        instrucciones_adicionales = f"--- INSTRUCCIONES ADICIONALES DE FORMATO ---\n\n{instrucciones_leidas}"
+                except FileNotFoundError:
+                    print(f"[Advertencia] Archivo de instrucciones no encontrado en: {ruta_instrucciones}")
+                    # Opcional: messagebox.showwarning("Advertencia", "No se encontró el archivo de instrucciones adicionales.")
+                except Exception as e_inst:
+                    print(f"[Error] No se pudo leer el archivo de instrucciones: {e_inst}")
+                    # Opcional: messagebox.showerror("Error", f"No se pudo leer el archivo de instrucciones:\n{e_inst}")
+                # --- FIN: Leer instrucciones adicionales ---
+
                 partes_finales = []
 
+                # 1. Prompt (si aplica)
                 if prompt_text and not self.solo_consulta_var.get():
                     partes_finales.append(prompt_text)
 
+                # 2. Instrucciones Adicionales (si se leyeron y no es solo consulta)
+                if instrucciones_adicionales and not self.solo_consulta_var.get():
+                    partes_finales.append(instrucciones_adicionales)
+
+                # 3. Solicitud (si existe)
                 if solicitud_text:
                     partes_finales.append(f"--- SOLICITUD ---\n{solicitud_text}")
 
+                # 4. Contexto de Archivos
                 partes_finales.append(f"--- CONTEXTO ARCHIVOS ({'Rutas Incluidas' if self.incluir_ruta_var.get() else 'Solo Nombres'}) ---{contenido}")
 
                 final_content = "\n\n".join(partes_finales).strip()
@@ -456,16 +482,16 @@ class MainWindow:
         }
 
     def _on_closing(self):
-         """Maneja el evento de cierre de la ventana."""
-         if self.file_generator and self.file_generator.is_alive():
-             if messagebox.askyesno("Generador Activo", "El generador de archivos está activo. ¿Deseas detenerlo y salir?"):
-                 self.file_generator.stop()
-                 self.file_generator.join(timeout=1)
-                 self.root.destroy()
-             else:
-                 return
-         else:
-             if messagebox.askokcancel("Salir", "¿Estás seguro de que quieres salir?"):
-                 self.root.destroy()
+        """Maneja el evento de cierre de la ventana."""
+        if self.file_generator and self.file_generator.is_alive():
+            if messagebox.askyesno("Generador Activo", "El generador de archivos está activo. ¿Deseas detenerlo y salir?"):
+                self.file_generator.stop()
+                self.file_generator.join(timeout=1)
+                self.root.destroy()
+            else:
+                return # No cerrar si el usuario cancela
+        else:
+            if messagebox.askokcancel("Salir", "¿Estás seguro de que quieres salir?"):
+                self.root.destroy()
 
 # --- Fin de la clase MainWindow ---

@@ -1,0 +1,13 @@
+**CRÍTICO: INDENTACIÓN DEL CÓDIGO**
+Al generar o modificar el código para CUALQUIER archivo, asegúrate de que **TODO** el código resultante esté **correctamente indentado** según las convenciones estándar del lenguaje del archivo destino (inferido del nombre de archivo en el comentario inicial, por ejemplo, `.py`, `.js`, `.ts`, `.json`, `.html`, `.ejs`).
+
+**Reglas Específicas de Indentación (OBLIGATORIAS):**
+1.  **Usa ESPACIOS, NO tabulaciones** para toda la indentación.
+2.  **Número de Espacios por Nivel:**
+    * Archivos **.py**: Usa **4 espacios** por nivel de indentación (siguiendo PEP 8).
+    * Archivos **.js, .ts, .json, .html, .ejs**: Usa **2 espacios** por nivel de indentación.
+3.  **Consistencia:** La indentación debe ser absolutamente consistente en todo el bloque de código que proporcionas.
+4.  **Bloques y Estructura:** Asegúrate de que los bloques de código (funciones, clases, bucles, condicionales, objetos JSON, etiquetas HTML/EJS anidadas, etc.) estén claramente definidos mediante la indentación correcta.
+5.  **Salida Lista para Usar:** El código debe estar formateado de tal manera que pueda ser copiado y pegado directamente en el archivo correspondiente sin necesidad de realizar ajustes manuales de indentación. No incluyas caracteres extraños ni mezcles espacios y tabulaciones.
+
+Recuerda mantener el comentario inicial con la ruta del archivo (`// ruta/al/archivo.js` o `# ruta/al/archivo.py`, etc.) como primera línea, seguido inmediatamente por el código correctamente indentado.
